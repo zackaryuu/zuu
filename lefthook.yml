@@ -1,0 +1,8 @@
+pre-commit:
+  commands:
+    bump_micro_version:
+      run: |
+        COMMIT_MSG=$(git log -1 --pretty=%B)
+        if [[ "$COMMIT_MSG" =~ ^(fix|ref|feat) ]]; then
+          python scripts/bump_micro_version.py "$COMMIT_MSG"
+        fi
