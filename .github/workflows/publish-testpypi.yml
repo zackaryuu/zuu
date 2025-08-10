@@ -14,6 +14,10 @@ jobs:
       contents: read
 
     steps:
+      
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Check commit message
         run: |
           COMMIT_MSG=$(git log -1 --pretty=%B)
@@ -22,8 +26,6 @@ jobs:
             exit 78
           fi
         shell: bash
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
