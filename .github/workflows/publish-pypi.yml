@@ -1,11 +1,14 @@
+
 name: Publish to PyPI
 
 on:
   workflow_dispatch:
   push:
-    # by branch
     branches:
-        - main
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   publish:
