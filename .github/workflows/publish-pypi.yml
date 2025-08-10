@@ -15,6 +15,14 @@ jobs:
       contents: read
 
     steps:
+      - name: Check commit message
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          if [[ ! "$COMMIT_MSG" =~ ^(fix|feat|ref) ]]; then
+            echo "Skipping workflow: commit message does not start with fix, feat, or ref."
+            exit 78
+          fi
+        shell: bash
       - name: Checkout code
         uses: actions/checkout@v4
 
