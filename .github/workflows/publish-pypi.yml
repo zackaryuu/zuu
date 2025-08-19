@@ -19,16 +19,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check commit message
-        if: github.event_name != 'workflow_dispatch'
-        run: |
-          COMMIT_MSG=$(git log -1 --pretty=%B)
-          if [[ ! "$COMMIT_MSG" =~ ^(fix|feat|ref).*$ ]]; then
-            echo "Skipping workflow: commit message does not start with a valid conventional commit type."
-            exit 78
-          fi
-        shell: bash
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
