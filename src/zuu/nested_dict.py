@@ -45,3 +45,15 @@ def unflatten_dict(dct : dict, sep : str = ".") -> dict:
             current = current[part]
         current[parts[-1]] = value
     return result
+
+def is_nested_dict(dct : dict) -> bool:
+    """
+    Checks if a dictionary is nested (contains other dictionaries).
+    
+    Args:
+        dct (dict): The dictionary to check.
+    
+    Returns:
+        bool: True if the dictionary is nested, False otherwise.
+    """
+    return any(isinstance(v, dict) for v in dct.values())
