@@ -20,6 +20,7 @@ dev-dependencies = [
     "pillow>=11.3.0",
     "pywin32>=311",
     "psutil>=7.0.0",
+    "flask>=3.1.1",
 ]
 
 [tool.hatch.metadata]
