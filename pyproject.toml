@@ -1,6 +1,6 @@
 [project]
 name = "zuu"
-version = "25.8.8"
+version = "25.8.11"
 description = "Zack's Useful Utilities - A collection of Python utilities for various tasks."
 authors = [
     { name = "ZackaryW", email = "gitzackw@gmail.com" }
@@ -21,6 +21,7 @@ dev-dependencies = [
     "pywin32>=311",
     "psutil>=7.0.0",
     "flask>=3.1.1",
+    "pyyaml>=6.0.2",
 ]
 
 [tool.hatch.metadata]
