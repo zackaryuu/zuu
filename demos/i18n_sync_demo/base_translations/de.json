@@ -1,0 +1,81 @@
+{
+  "app": {
+    "name": "GlobalConnect",
+    "features": ["Nachrichten", "Video", "Dateien"]
+  },
+  "nav": {
+    "main": {
+      "items": [
+        {
+          "id": "dashboard",
+          "label": "Dashboard",
+          "icon": "home",
+          "children": [
+            {"id": "overview", "label": "Übersicht"},
+            {"id": "analytics", "label": "Analytik"}
+          ]
+        },
+        {
+          "id": "messages", 
+          "label": "Nachrichten",
+          "icon": "chat",
+          "children": [
+            {"id": "inbox", "label": "Posteingang"},
+            {"id": "sent", "label": "Gesendet"},
+            {"id": "drafts", "label": "Entwürfe"}
+          ]
+        }
+      ]
+    },
+    "user": {
+      "menu": [
+        {"action": "profile", "label": "Profil"},
+        {"action": "settings", "label": "Einstellungen"},
+        {"action": "logout", "label": "Abmelden"}
+      ]
+    }
+  },
+  "forms": {
+    "login": {
+      "title": "Anmelden",
+      "fields": {
+        "email": {
+          "label": "E-Mail",
+          "placeholder": "E-Mail eingeben",
+          "validation": {
+            "required": "E-Mail erforderlich",
+            "invalid": "Ungültige E-Mail"
+          }
+        },
+        "password": {
+          "label": "Passwort", 
+          "validation": {
+            "required": "Passwort erforderlich",
+            "min": "Mindestens 8 Zeichen"
+          }
+        }
+      },
+      "actions": ["absenden", "vergessen", "registrieren"]
+    }
+  },
+  "notifications": {
+    "types": {
+      "success": {
+        "icon": "check",
+        "messages": [
+          "Erfolgreich gespeichert",
+          "Erfolgreich gelöscht", 
+          "Erfolgreich aktualisiert"
+        ]
+      },
+      "error": {
+        "icon": "warning",
+        "messages": [
+          "Netzwerkfehler",
+          "Serverfehler",
+          "Zugriff verweigert"
+        ]
+      }
+    }
+  }
+}

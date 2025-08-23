@@ -1,0 +1,81 @@
+{
+  "app": {
+    "name": "GlobalConnect",
+    "features": ["messagerie", "vidéo", "fichiers"]
+  },
+  "nav": {
+    "main": {
+      "items": [
+        {
+          "id": "dashboard",
+          "label": "Tableau de Bord",
+          "icon": "home",
+          "children": [
+            {"id": "overview", "label": "Aperçu"},
+            {"id": "analytics", "label": "Analytique"}
+          ]
+        },
+        {
+          "id": "messages", 
+          "label": "Messages",
+          "icon": "chat",
+          "children": [
+            {"id": "inbox", "label": "Boîte de Réception"},
+            {"id": "sent", "label": "Envoyés"},
+            {"id": "drafts", "label": "Brouillons"}
+          ]
+        }
+      ]
+    },
+    "user": {
+      "menu": [
+        {"action": "profile", "label": "Profil"},
+        {"action": "settings", "label": "Paramètres"},
+        {"action": "logout", "label": "Se Déconnecter"}
+      ]
+    }
+  },
+  "forms": {
+    "login": {
+      "title": "Se Connecter",
+      "fields": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Entrez votre email",
+          "validation": {
+            "required": "Email requis",
+            "invalid": "Email invalide"
+          }
+        },
+        "password": {
+          "label": "Mot de Passe", 
+          "validation": {
+            "required": "Mot de passe requis",
+            "min": "Au moins 8 caractères"
+          }
+        }
+      },
+      "actions": ["soumettre", "oublié", "s'inscrire"]
+    }
+  },
+  "notifications": {
+    "types": {
+      "success": {
+        "icon": "check",
+        "messages": [
+          "Sauvegardé avec succès",
+          "Supprimé avec succès", 
+          "Mis à jour avec succès"
+        ]
+      },
+      "error": {
+        "icon": "warning",
+        "messages": [
+          "Erreur réseau",
+          "Erreur serveur",
+          "Permission refusée"
+        ]
+      }
+    }
+  }
+}

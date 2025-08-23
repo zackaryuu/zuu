@@ -1,0 +1,81 @@
+{
+  "app": {
+    "name": "GlobalConnect",
+    "features": ["消息传递", "视频", "文件"]
+  },
+  "nav": {
+    "main": {
+      "items": [
+        {
+          "id": "dashboard",
+          "label": "仪表板",
+          "icon": "home",
+          "children": [
+            {"id": "overview", "label": "概览"},
+            {"id": "analytics", "label": "分析"}
+          ]
+        },
+        {
+          "id": "messages", 
+          "label": "消息",
+          "icon": "chat",
+          "children": [
+            {"id": "inbox", "label": "收件箱"},
+            {"id": "sent", "label": "已发送"},
+            {"id": "drafts", "label": "草稿"}
+          ]
+        }
+      ]
+    },
+    "user": {
+      "menu": [
+        {"action": "profile", "label": "个人资料"},
+        {"action": "settings", "label": "设置"},
+        {"action": "logout", "label": "登出"}
+      ]
+    }
+  },
+  "forms": {
+    "login": {
+      "title": "登录",
+      "fields": {
+        "email": {
+          "label": "邮箱",
+          "placeholder": "输入邮箱",
+          "validation": {
+            "required": "邮箱必填",
+            "invalid": "无效邮箱"
+          }
+        },
+        "password": {
+          "label": "密码", 
+          "validation": {
+            "required": "密码必填",
+            "min": "至少8个字符"
+          }
+        }
+      },
+      "actions": ["提交", "忘记", "注册"]
+    }
+  },
+  "notifications": {
+    "types": {
+      "success": {
+        "icon": "check",
+        "messages": [
+          "保存成功",
+          "删除成功", 
+          "更新成功"
+        ]
+      },
+      "error": {
+        "icon": "warning",
+        "messages": [
+          "网络错误",
+          "服务器错误",
+          "权限被拒绝"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,197 @@
+{
+    "app": {
+        "name": "GlobalConnect",
+        "features": [
+            "messaging",
+            "video",
+            "files"
+        ]
+    },
+    "nav": {
+        "main": {
+            "items": [
+                {
+                    "id": "dashboard",
+                    "label": "Dashboard",
+                    "icon": "home",
+                    "children": [
+                        {
+                            "id": "overview",
+                            "label": "Overview"
+                        },
+                        {
+                            "id": "analytics",
+                            "label": "Analytics"
+                        }
+                    ]
+                },
+                {
+                    "id": "messages",
+                    "label": "Messages",
+                    "icon": "chat",
+                    "children": [
+                        {
+                            "id": "inbox",
+                            "label": "Inbox"
+                        },
+                        {
+                            "id": "sent",
+                            "label": "Sent"
+                        },
+                        {
+                            "id": "drafts",
+                            "label": "Drafts"
+                        }
+                    ]
+                }
+            ]
+        },
+        "user": {
+            "menu": [
+                {
+                    "action": "profile",
+                    "label": "Profile"
+                },
+                {
+                    "action": "settings",
+                    "label": "Settings"
+                },
+                {
+                    "action": "logout",
+                    "label": "Logout"
+                }
+            ]
+        }
+    },
+    "forms": {
+        "login": {
+            "fields": {
+                "email": {
+                    "placeholder": "Enter email",
+                    "validation": {
+                        "required": "Email required",
+                        "invalid": "Invalid email"
+                    }
+                },
+                "password": {
+                    "validation": {
+                        "required": "Password required",
+                        "min": "At least 8 characters"
+                    }
+                }
+            },
+            "actions": [
+                "submit",
+                "forgot",
+                "register"
+            ]
+        }
+    },
+    "notifications": {
+        "types": {
+            "success": {
+                "icon": "check",
+                "messages": [
+                    "Saved successfully",
+                    "Deleted successfully",
+                    "Updated successfully"
+                ]
+            },
+            "error": {
+                "icon": "warning",
+                "messages": [
+                    "Network error",
+                    "Server error",
+                    "Permission denied"
+                ]
+            }
+        }
+    },
+    "features": {
+        "search": {
+            "enabled": true,
+            "advanced": {
+                "title": "Advanced Search",
+                "placeholder": "Search everything..."
+            },
+            "filters": {
+                "categories": [
+                    "all",
+                    "messages",
+                    "files",
+                    "users"
+                ]
+            },
+            "results": {
+                "per_page": 25,
+                "sort_options": [
+                    "relevance",
+                    "date",
+                    "name"
+                ]
+            }
+        }
+    },
+    "ui": {
+        "search": {
+            "toolbar": {
+                "expand": "Show Filters",
+                "collapse": "Hide Filters",
+                "clear": "Clear All"
+            }
+        }
+    },
+    "auth": {
+        "signin": {
+            "title": "Sign In",
+            "fields": {
+                "email": {
+                    "label": "Email"
+                },
+                "password": {
+                    "label": "Password"
+                }
+            },
+            "remember_me": "Remember me"
+        },
+        "register": {
+            "title": "Create Account"
+        }
+    },
+    "help": {
+        "center": {
+            "title": "Help Center",
+            "search": "How can we help you?"
+        },
+        "categories": {
+            "getting_started": "Getting Started",
+            "account": "Account Management",
+            "billing": "Billing & Payments",
+            "technical": "Technical Support"
+        },
+        "articles": {
+            "popular": "Popular Articles"
+        },
+        "contact": {
+            "title": "Still need help?",
+            "description": "Our support team is here to help",
+            "button": "Contact Support"
+        }
+    },
+    "faq": {
+        "title": "Frequently Asked Questions",
+        "general": {
+            "title": "General Questions",
+            "what_is": "What is this service?",
+            "how_to_start": "How do I get started?",
+            "pricing": "What does it cost?"
+        },
+        "account": {
+            "title": "Account Questions",
+            "forgot_password": "I forgot my password",
+            "change_email": "How do I change my email?",
+            "delete_account": "How do I delete my account?"
+        },
+        "search_placeholder": "Search FAQ..."
+    }
+}
