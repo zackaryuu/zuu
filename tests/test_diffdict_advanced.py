@@ -1,5 +1,5 @@
 import pytest
-from zuu.syncdict import DiffDict
+from zuu.diffdict import DiffDict
 
 
 class TestDiffDictAdvancedFeatures:
@@ -417,3 +417,204 @@ class TestDiffDictAdvancedFeatures:
         assert len(dd.changes["all"]) == initial_changes + 1
         change = dd.changes["last"]
         assert change["key"] == "root.data"
+
+    def test_update_all_basic_functionality(self):
+        """Test update_all method detects all external changes"""
+        dd = DiffDict()
+        
+        # Add multiple mutable objects
+        list1 = [1, 2, 3]
+        list2 = ["a", "b"]
+        dict1 = {"count": 0}
+        primitive = "unchanged"
+        
+        dd["list1"] = list1
+        dd["list2"] = list2
+        dd["dict1"] = dict1
+        dd["primitive"] = primitive
+        
+        initial_changes = len(dd.changes["all"])
+        assert initial_changes == 4
+        
+        # Make external modifications to some objects
+        list1.append(4)
+        list1.extend([5, 6])
+        dict1["count"] = 10
+        dict1["new_field"] = "added"
+        # list2 and primitive remain unchanged
+        
+        # Call update_all - now returns a dict
+        result = dd.update_all()
+        changed_keys = result["changed"]
+        
+        # Should detect changes in list1 and dict1, but not list2 or primitive
+        assert len(changed_keys) == 2
+        assert "list1" in changed_keys
+        assert "dict1" in changed_keys
+        assert "list2" not in changed_keys
+        assert "primitive" not in changed_keys
+        
+        # Total changes should have increased by 2
+        assert len(dd.changes["all"]) == initial_changes + 2
+
+    def test_update_all_no_changes(self):
+        """Test update_all when no external changes have been made"""
+        dd = DiffDict()
+        
+        dd["test1"] = [1, 2, 3]
+        dd["test2"] = {"key": "value"}
+        dd["test3"] = "string"
+        
+        initial_changes = len(dd.changes["all"])
+        
+        # Call update_all without making any external changes
+        result = dd.update_all()
+        changed_keys = result["changed"]
+        
+        assert changed_keys == []
+        assert len(dd.changes["all"]) == initial_changes
+
+    def test_update_all_empty_dict(self):
+        """Test update_all on empty DiffDict"""
+        dd = DiffDict()
+        
+        result = dd.update_all()
+        
+        assert result["changed"] == []
+        assert result["new_tracked"] == []
+        assert result["orphaned"] == []
+        assert len(dd.changes["all"]) == 0
+
+    def test_update_all_with_deleted_keys(self):
+        """Test update_all handles keys that were deleted externally"""
+        dd = DiffDict()
+        
+        # Add some data
+        dd["key1"] = [1, 2, 3]
+        dd["key2"] = {"data": "test"}
+        
+        # Simulate external deletion by removing from internal data
+        # (This is an edge case that shouldn't normally happen, but we should handle it gracefully)
+        dd._DiffDict__data.pop("key1", None)
+        
+        # update_all should handle the missing key gracefully
+        result = dd.update_all()
+        
+        # key1 should be in orphaned since it was deleted
+        # key2 should not be in changed since it wasn't modified
+        assert "key1" not in result["changed"]
+        assert "key2" not in result["changed"]
+        assert "key1" in result["orphaned"]
+
+    def test_update_all_with_callbacks(self):
+        """Test update_all triggers callbacks for detected changes"""
+        dd = DiffDict()
+        callback_calls = []
+        
+        def track_changes(diff_dict):
+            callback_calls.append(diff_dict.changes["last"]["key"])
+        
+        dd.add_callback(track_changes)
+        
+        # Add data
+        list_data = [1, 2, 3]
+        dict_data = {"count": 0}
+        dd["list_data"] = list_data
+        dd["dict_data"] = dict_data
+        
+        # Clear callback history after initial setup
+        callback_calls.clear()
+        
+        # Make external changes
+        list_data.append(4)
+        dict_data["count"] = 5
+        
+        # Call update_all
+        result = dd.update_all()
+        changed_keys = result["changed"]
+        
+        # Callbacks should have been triggered for each detected change
+        assert len(callback_calls) == len(changed_keys)
+        assert "list_data" in callback_calls
+        assert "dict_data" in callback_calls
+
+    def test_update_all_with_dataref_manipulation(self):
+        """Test update_all with dataref.update() and include_new_keys parameter"""
+        dd = DiffDict()
+        
+        # Normal tracked data
+        dd["tracked"] = [1, 2, 3]
+        
+        # Add untracked data via dataref
+        dd.dataref.update({"untracked": [4, 5, 6]})
+        
+        # Modify both
+        dd["tracked"].append(99)
+        dd.dataref["untracked"].append(88)
+        
+        # Basic update_all should only detect tracked changes
+        result = dd.update_all()
+        assert len(result["changed"]) == 1
+        assert "tracked" in result["changed"]
+        assert len(result["new_tracked"]) == 0
+        
+        # Enhanced update_all should detect and track new keys
+        result = dd.update_all(include_new_keys=True)
+        assert len(result["new_tracked"]) == 1
+        assert "untracked" in result["new_tracked"]
+
+    def test_update_all_simple_backward_compatibility(self):
+        """Test update_all_simple() method for backward compatibility"""
+        dd = DiffDict()
+        
+        dd["test1"] = [1, 2, 3]
+        dd["test2"] = {"count": 0}
+        
+        # Make changes
+        dd["test1"].append(4)
+        dd["test2"]["count"] = 10
+        
+        # Test the simple method
+        changed_keys = dd.update_all_simple()
+        
+        assert len(changed_keys) == 2
+        assert "test1" in changed_keys
+        assert "test2" in changed_keys
+
+    def test_update_all_orphaned_keys_cleanup(self):
+        """Test that orphaned keys are properly cleaned up"""
+        dd = DiffDict()
+        
+        dd["keep"] = [1, 2, 3]
+        dd["remove"] = {"will": "be deleted"}
+        
+        initial_tracked = len(dd._DiffDict__keysums)
+        assert initial_tracked == 2
+        
+        # Delete from dataref
+        del dd.dataref["remove"]
+        
+        # Update should detect and clean up orphaned key
+        result = dd.update_all()
+        
+        assert "remove" in result["orphaned"]
+        assert len(dd._DiffDict__keysums) == initial_tracked - 1
+        assert "remove" not in dd._DiffDict__keysums
+
+    def test_update_all_complete_dataref_replacement(self):
+        """Test update_all after complete dataref replacement"""
+        dd = DiffDict()
+        
+        dd["original"] = [1, 2, 3]
+        
+        # Replace entire dataref
+        dd.dataref = {"new": [7, 8, 9]}
+        
+        # Should detect orphaned original and optionally track new
+        result = dd.update_all(include_new_keys=True)
+        
+        assert "original" in result["orphaned"]
+        assert "new" in result["new_tracked"]
+        
+        # Should now be tracking only the new key
+        assert list(dd._DiffDict__keysums.keys()) == ["new"]

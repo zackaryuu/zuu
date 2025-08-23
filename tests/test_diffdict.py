@@ -1,5 +1,5 @@
 import pytest
-from zuu.syncdict import DiffDict
+from zuu.diffdict import DiffDict
 
 
 class TestDiffDict:
