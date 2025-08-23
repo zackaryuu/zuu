@@ -1,0 +1,81 @@
+{
+  "app": {
+    "name": "GlobalConnect",
+    "features": ["mensajería", "video", "archivos"]
+  },
+  "nav": {
+    "main": {
+      "items": [
+        {
+          "id": "dashboard",
+          "label": "Tablero",
+          "icon": "home",
+          "children": [
+            {"id": "overview", "label": "Vista General"},
+            {"id": "analytics", "label": "Analítica"}
+          ]
+        },
+        {
+          "id": "messages", 
+          "label": "Mensajes",
+          "icon": "chat",
+          "children": [
+            {"id": "inbox", "label": "Bandeja de Entrada"},
+            {"id": "sent", "label": "Enviados"},
+            {"id": "drafts", "label": "Borradores"}
+          ]
+        }
+      ]
+    },
+    "user": {
+      "menu": [
+        {"action": "profile", "label": "Perfil"},
+        {"action": "settings", "label": "Configuración"},
+        {"action": "logout", "label": "Cerrar Sesión"}
+      ]
+    }
+  },
+  "forms": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "fields": {
+        "email": {
+          "label": "Correo",
+          "placeholder": "Ingresa tu correo",
+          "validation": {
+            "required": "Correo requerido",
+            "invalid": "Correo inválido"
+          }
+        },
+        "password": {
+          "label": "Contraseña", 
+          "validation": {
+            "required": "Contraseña requerida",
+            "min": "Al menos 8 caracteres"
+          }
+        }
+      },
+      "actions": ["enviar", "olvidé", "registrarse"]
+    }
+  },
+  "notifications": {
+    "types": {
+      "success": {
+        "icon": "check",
+        "messages": [
+          "Guardado exitosamente",
+          "Eliminado exitosamente", 
+          "Actualizado exitosamente"
+        ]
+      },
+      "error": {
+        "icon": "warning",
+        "messages": [
+          "Error de red",
+          "Error del servidor",
+          "Permiso denegado"
+        ]
+      }
+    }
+  }
+}

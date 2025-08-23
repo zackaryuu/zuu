@@ -4,23 +4,24 @@ import typing
 from zuu.simple_string import simple_match
 
 
-def extract_nested_keys(dct : dict | list, separator: str = '/', current : str = ''):
+def extract_nested_keys(dct : dict | list, separator: str = '/', current : str = '', yieldComplexStructure : bool = False):
     """
     Recursively yields all nested keys in a dictionary or list structure as path strings.
     Args:
         dct (dict | list): The input dictionary or list to extract keys from.
         separator (str): Separator used in key paths (default '/').
         current (str): Current path prefix (used internally).
+        yieldComplexStructure (bool): If True, also yields intermediate complex structures (dicts/lists) (default False).
     Yields:
         str: Path string for each leaf value in the structure.
     Note:
         This function only yields keys, not values. For key-value pairs, use iter_nested_keys.
     """
     method = _extract_dict if isinstance(dct, dict) else _extract_list
-    for key, _ in method(dct, separator, current):
+    for key, _ in method(dct, separator, current, yieldComplexStructure):
         yield key
 
-def _extract_dict(dct : dict, separator : str, current : str, exclusion : list[str] = None):
+def _extract_dict(dct : dict, separator : str, current : str, exclusion : list[str] = None, yieldComplexStructure : bool = False):
     """
     Helper to recursively extract keys and values from a dictionary.
     Args:
@@ -28,9 +29,13 @@ def _extract_dict(dct : dict, separator : str, current : str, exclusion : list[s
         separator (str): Separator for key paths.
         current (str): Current path prefix.
         exclusion (list[str], optional): List of mask patterns to exclude certain keys (uses simple_match).
+        yieldComplexStructure (bool): If True, also yields intermediate complex structures (dicts/lists) (default False).
     Yields:
         tuple: (key_path, value) for each leaf value.
     """
+    if yieldComplexStructure:
+        yield current, dct
+
     for k, v in dct.items():
         new_key = f"{current}{separator}{k}" if current else k
         if isinstance(v, dict):
@@ -42,7 +47,7 @@ def _extract_dict(dct : dict, separator : str, current : str, exclusion : list[s
                 continue
             yield new_key, v
 
-def _extract_list(dct : list, separator : str, current : str, exclusion : list[str] = None):
+def _extract_list(dct : list, separator : str, current : str, exclusion : list[str] = None, yieldComplexStructure : bool = False):
     """
     Helper to recursively extract keys and values from a list.
     Args:
@@ -50,22 +55,26 @@ def _extract_list(dct : list, separator : str, current : str, exclusion : list[s
         separator (str): Separator for key paths.
         current (str): Current path prefix.
         exclusion (list[str], optional): List of mask patterns to exclude certain keys (uses simple_match).
+        yieldComplexStructure (bool): If True, also yields intermediate complex structures (dicts/lists) (default False).
     Yields:
         tuple: (key_path, value) for each leaf value.
     """
+    if yieldComplexStructure:
+        yield current, dct
+
     for i, v in enumerate(dct):
         new_key = f"{current}{separator}{i}" if current else str(i)
         if isinstance(v, dict):
-            yield from _extract_dict(v, separator, new_key, exclusion)
+            yield from _extract_dict(v, separator, new_key, exclusion, yieldComplexStructure)
         elif isinstance(v, list):
-            yield from _extract_list(v, separator, new_key, exclusion)
+            yield from _extract_list(v, separator, new_key, exclusion, yieldComplexStructure)
         else:
             if exclusion and any(simple_match(mask, new_key) for mask in exclusion):
                 continue
             yield new_key, v
 
 
-def iter_nested_keys(dct : dict | list, separator: str = '/', masks :list[str] = None, iter_type : typing.Literal["key", "value", "both"] = "key"):
+def iter_nested_keys(dct : dict | list, separator: str = '/', masks :list[str] = None, iter_type : typing.Literal["key", "value", "both"] = "key", yieldComplexStructure : bool = False):
     """
     Iterates over all nested keys and/or values in a dictionary or list structure.
     Args:
@@ -76,6 +85,7 @@ def iter_nested_keys(dct : dict | list, separator: str = '/', masks :list[str] =
             - 'key': yields key paths only
             - 'value': yields values only
             - 'both': yields (key, value) tuples
+        yieldComplexStructure (bool): If True, also yields intermediate complex structures (dicts/lists) (default False).
     Yields:
         str, value, or tuple: Depending on iter_type.
     Raises:
@@ -84,9 +94,9 @@ def iter_nested_keys(dct : dict | list, separator: str = '/', masks :list[str] =
     def _internal():
         current = ''
         if isinstance(dct, dict):
-            yield from _extract_dict(dct, separator, current, masks)
+            yield from _extract_dict(dct, separator, current, masks, yieldComplexStructure)
         elif isinstance(dct, list):
-            yield from _extract_list(dct, separator, current, masks)
+            yield from _extract_list(dct, separator, current, masks, yieldComplexStructure)
 
     for key in _internal():
         if iter_type == "key":

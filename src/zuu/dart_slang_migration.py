@@ -693,6 +693,10 @@ def update_dart_imports(
     """
     lines = file_content.split('\n')
     new_lines = []
+    # stripping lib 
+    if output_directory.startswith("lib/"):
+        output_directory = output_directory[4:]
+
     slang_import_line = f"import '{output_directory}/{output_file_name}';"
     slang_import_added = False
     imports_changed = False

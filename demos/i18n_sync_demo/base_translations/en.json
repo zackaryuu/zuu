@@ -1,0 +1,81 @@
+{
+  "app": {
+    "name": "GlobalConnect",
+    "features": ["messaging", "video", "files"]
+  },
+  "nav": {
+    "main": {
+      "items": [
+        {
+          "id": "dashboard",
+          "label": "Dashboard",
+          "icon": "home",
+          "children": [
+            {"id": "overview", "label": "Overview"},
+            {"id": "analytics", "label": "Analytics"}
+          ]
+        },
+        {
+          "id": "messages", 
+          "label": "Messages",
+          "icon": "chat",
+          "children": [
+            {"id": "inbox", "label": "Inbox"},
+            {"id": "sent", "label": "Sent"},
+            {"id": "drafts", "label": "Drafts"}
+          ]
+        }
+      ]
+    },
+    "user": {
+      "menu": [
+        {"action": "profile", "label": "Profile"},
+        {"action": "settings", "label": "Settings"},
+        {"action": "logout", "label": "Logout"}
+      ]
+    }
+  },
+  "forms": {
+    "login": {
+      "title": "Sign In",
+      "fields": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Enter email",
+          "validation": {
+            "required": "Email required",
+            "invalid": "Invalid email"
+          }
+        },
+        "password": {
+          "label": "Password", 
+          "validation": {
+            "required": "Password required",
+            "min": "At least 8 characters"
+          }
+        }
+      },
+      "actions": ["submit", "forgot", "register"]
+    }
+  },
+  "notifications": {
+    "types": {
+      "success": {
+        "icon": "check",
+        "messages": [
+          "Saved successfully",
+          "Deleted successfully", 
+          "Updated successfully"
+        ]
+      },
+      "error": {
+        "icon": "warning",
+        "messages": [
+          "Network error",
+          "Server error",
+          "Permission denied"
+        ]
+      }
+    }
+  }
+}

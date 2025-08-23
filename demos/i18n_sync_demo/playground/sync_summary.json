@@ -1,0 +1,143 @@
+{
+  "demo_info": {
+    "created": "2025-08-22T20:30:13.060253",
+    "languages": [
+      "en",
+      "es",
+      "fr",
+      "de",
+      "ja",
+      "zh"
+    ],
+    "total_files": 6
+  },
+  "sync_stats": {
+    "total_changes": 37,
+    "watched_files": 5,
+    "base_file": "en.json"
+  },
+  "final_structure": {
+    "app": {
+      "name": "str",
+      "features": "list"
+    },
+    "nav": {
+      "main": {
+        "items": "list"
+      },
+      "user": {
+        "menu": "list"
+      }
+    },
+    "forms": {
+      "login": {
+        "fields": {
+          "email": {
+            "placeholder": "str",
+            "validation": {
+              "required": "str",
+              "invalid": "str"
+            }
+          },
+          "password": {
+            "validation": {
+              "required": "str",
+              "min": "str"
+            }
+          }
+        },
+        "actions": "list"
+      }
+    },
+    "notifications": {
+      "types": {
+        "success": {
+          "icon": "str",
+          "messages": "list"
+        },
+        "error": {
+          "icon": "str",
+          "messages": "list"
+        }
+      }
+    },
+    "features": {
+      "search": {
+        "enabled": "bool",
+        "advanced": {
+          "title": "str",
+          "placeholder": "str"
+        },
+        "filters": {
+          "categories": "list"
+        },
+        "results": {
+          "per_page": "int",
+          "sort_options": "list"
+        }
+      }
+    },
+    "ui": {
+      "search": {
+        "toolbar": {
+          "expand": "str",
+          "collapse": "str",
+          "clear": "str"
+        }
+      }
+    },
+    "auth": {
+      "signin": {
+        "title": "str",
+        "fields": {
+          "email": {
+            "label": "str"
+          },
+          "password": {
+            "label": "str"
+          }
+        },
+        "remember_me": "str"
+      },
+      "register": {
+        "title": "str"
+      }
+    },
+    "help": {
+      "center": {
+        "title": "str",
+        "search": "str"
+      },
+      "categories": {
+        "getting_started": "str",
+        "account": "str",
+        "billing": "str",
+        "technical": "str"
+      },
+      "articles": {
+        "popular": "str"
+      },
+      "contact": {
+        "title": "str",
+        "description": "str",
+        "button": "str"
+      }
+    },
+    "faq": {
+      "title": "str",
+      "general": {
+        "title": "str",
+        "what_is": "str",
+        "how_to_start": "str",
+        "pricing": "str"
+      },
+      "account": {
+        "title": "str",
+        "forgot_password": "str",
+        "change_email": "str",
+        "delete_account": "str"
+      },
+      "search_placeholder": "str"
+    }
+  }
+}

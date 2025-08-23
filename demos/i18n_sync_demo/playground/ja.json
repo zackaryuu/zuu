@@ -1,0 +1,197 @@
+{
+    "app": {
+        "name": "GlobalConnect",
+        "features": [
+            "メッセージング",
+            "ビデオ",
+            "ファイル"
+        ]
+    },
+    "nav": {
+        "main": {
+            "items": [
+                {
+                    "id": "dashboard",
+                    "label": "ダッシュボード",
+                    "icon": "home",
+                    "children": [
+                        {
+                            "id": "overview",
+                            "label": "概要"
+                        },
+                        {
+                            "id": "analytics",
+                            "label": "分析"
+                        }
+                    ]
+                },
+                {
+                    "id": "messages",
+                    "label": "メッセージ",
+                    "icon": "chat",
+                    "children": [
+                        {
+                            "id": "inbox",
+                            "label": "受信トレイ"
+                        },
+                        {
+                            "id": "sent",
+                            "label": "送信済み"
+                        },
+                        {
+                            "id": "drafts",
+                            "label": "下書き"
+                        }
+                    ]
+                }
+            ]
+        },
+        "user": {
+            "menu": [
+                {
+                    "action": "profile",
+                    "label": "プロフィール"
+                },
+                {
+                    "action": "settings",
+                    "label": "設定"
+                },
+                {
+                    "action": "logout",
+                    "label": "ログアウト"
+                }
+            ]
+        }
+    },
+    "forms": {
+        "login": {
+            "fields": {
+                "email": {
+                    "placeholder": "メールを入力",
+                    "validation": {
+                        "required": "メールが必要です",
+                        "invalid": "無効なメール"
+                    }
+                },
+                "password": {
+                    "validation": {
+                        "required": "パスワードが必要です",
+                        "min": "8文字以上"
+                    }
+                }
+            },
+            "actions": [
+                "送信",
+                "忘れた",
+                "登録"
+            ]
+        }
+    },
+    "notifications": {
+        "types": {
+            "success": {
+                "icon": "check",
+                "messages": [
+                    "正常に保存されました",
+                    "正常に削除されました",
+                    "正常に更新されました"
+                ]
+            },
+            "error": {
+                "icon": "warning",
+                "messages": [
+                    "ネットワークエラー",
+                    "サーバーエラー",
+                    "アクセス拒否"
+                ]
+            }
+        }
+    },
+    "features": {
+        "search": {
+            "filters": {
+                "categories": {
+                    "3": "users",
+                    "0": "all",
+                    "2": "files",
+                    "1": "messages"
+                }
+            },
+            "enabled": true,
+            "advanced": {
+                "title": "Advanced Search",
+                "placeholder": "Search everything..."
+            },
+            "results": {
+                "sort_options": {
+                    "1": "date",
+                    "2": "name",
+                    "0": "relevance"
+                },
+                "per_page": 25
+            }
+        }
+    },
+    "ui": {
+        "search": {
+            "toolbar": {
+                "collapse": "Hide Filters",
+                "clear": "Clear All",
+                "expand": "Show Filters"
+            }
+        }
+    },
+    "auth": {
+        "signin": {
+            "fields": {
+                "password": {
+                    "label": "パスワード"
+                },
+                "email": {
+                    "label": "メール"
+                }
+            },
+            "title": "ログイン",
+            "remember_me": "Remember me"
+        },
+        "register": {
+            "title": "Create Account"
+        }
+    },
+    "faq": {
+        "account": {
+            "change_email": "How do I change my email?",
+            "delete_account": "How do I delete my account?",
+            "title": "Account Questions",
+            "forgot_password": "I forgot my password"
+        },
+        "general": {
+            "pricing": "What does it cost?",
+            "what_is": "What is this service?",
+            "how_to_start": "How do I get started?",
+            "title": "General Questions"
+        },
+        "title": "Frequently Asked Questions",
+        "search_placeholder": "Search FAQ..."
+    },
+    "help": {
+        "categories": {
+            "technical": "Technical Support",
+            "account": "Account Management",
+            "getting_started": "Getting Started",
+            "billing": "Billing & Payments"
+        },
+        "contact": {
+            "description": "Our support team is here to help",
+            "button": "Contact Support",
+            "title": "Still need help?"
+        },
+        "center": {
+            "title": "Help Center",
+            "search": "How can we help you?"
+        },
+        "articles": {
+            "popular": "Popular Articles"
+        }
+    }
+}

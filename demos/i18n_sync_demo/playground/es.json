@@ -1,0 +1,197 @@
+{
+    "app": {
+        "name": "GlobalConnect",
+        "features": [
+            "mensajería",
+            "video",
+            "archivos"
+        ]
+    },
+    "nav": {
+        "main": {
+            "items": [
+                {
+                    "id": "dashboard",
+                    "label": "Tablero",
+                    "icon": "home",
+                    "children": [
+                        {
+                            "id": "overview",
+                            "label": "Vista General"
+                        },
+                        {
+                            "id": "analytics",
+                            "label": "Analítica"
+                        }
+                    ]
+                },
+                {
+                    "id": "messages",
+                    "label": "Mensajes",
+                    "icon": "chat",
+                    "children": [
+                        {
+                            "id": "inbox",
+                            "label": "Bandeja de Entrada"
+                        },
+                        {
+                            "id": "sent",
+                            "label": "Enviados"
+                        },
+                        {
+                            "id": "drafts",
+                            "label": "Borradores"
+                        }
+                    ]
+                }
+            ]
+        },
+        "user": {
+            "menu": [
+                {
+                    "action": "profile",
+                    "label": "Perfil"
+                },
+                {
+                    "action": "settings",
+                    "label": "Configuración"
+                },
+                {
+                    "action": "logout",
+                    "label": "Cerrar Sesión"
+                }
+            ]
+        }
+    },
+    "forms": {
+        "login": {
+            "fields": {
+                "email": {
+                    "placeholder": "Ingresa tu correo",
+                    "validation": {
+                        "required": "Correo requerido",
+                        "invalid": "Correo inválido"
+                    }
+                },
+                "password": {
+                    "validation": {
+                        "required": "Contraseña requerida",
+                        "min": "Al menos 8 caracteres"
+                    }
+                }
+            },
+            "actions": [
+                "enviar",
+                "olvidé",
+                "registrarse"
+            ]
+        }
+    },
+    "notifications": {
+        "types": {
+            "success": {
+                "icon": "check",
+                "messages": [
+                    "Guardado exitosamente",
+                    "Eliminado exitosamente",
+                    "Actualizado exitosamente"
+                ]
+            },
+            "error": {
+                "icon": "warning",
+                "messages": [
+                    "Error de red",
+                    "Error del servidor",
+                    "Permiso denegado"
+                ]
+            }
+        }
+    },
+    "features": {
+        "search": {
+            "filters": {
+                "categories": {
+                    "3": "users",
+                    "0": "all",
+                    "2": "files",
+                    "1": "messages"
+                }
+            },
+            "enabled": true,
+            "advanced": {
+                "title": "Advanced Search",
+                "placeholder": "Search everything..."
+            },
+            "results": {
+                "sort_options": {
+                    "1": "date",
+                    "2": "name",
+                    "0": "relevance"
+                },
+                "per_page": 25
+            }
+        }
+    },
+    "ui": {
+        "search": {
+            "toolbar": {
+                "collapse": "Hide Filters",
+                "clear": "Clear All",
+                "expand": "Show Filters"
+            }
+        }
+    },
+    "auth": {
+        "signin": {
+            "fields": {
+                "password": {
+                    "label": "Contraseña"
+                },
+                "email": {
+                    "label": "Correo"
+                }
+            },
+            "title": "Iniciar Sesión",
+            "remember_me": "Remember me"
+        },
+        "register": {
+            "title": "Create Account"
+        }
+    },
+    "faq": {
+        "account": {
+            "change_email": "How do I change my email?",
+            "delete_account": "How do I delete my account?",
+            "title": "Account Questions",
+            "forgot_password": "I forgot my password"
+        },
+        "general": {
+            "pricing": "What does it cost?",
+            "what_is": "What is this service?",
+            "how_to_start": "How do I get started?",
+            "title": "General Questions"
+        },
+        "title": "Frequently Asked Questions",
+        "search_placeholder": "Search FAQ..."
+    },
+    "help": {
+        "categories": {
+            "technical": "Technical Support",
+            "account": "Account Management",
+            "getting_started": "Getting Started",
+            "billing": "Billing & Payments"
+        },
+        "contact": {
+            "description": "Our support team is here to help",
+            "button": "Contact Support",
+            "title": "Still need help?"
+        },
+        "center": {
+            "title": "Help Center",
+            "search": "How can we help you?"
+        },
+        "articles": {
+            "popular": "Popular Articles"
+        }
+    }
+}
