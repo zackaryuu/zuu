@@ -1,5 +1,4 @@
 import datetime
-import os
 from types import MappingProxyType
 from typing import TypedDict
 from zuu.simple_dict import deep_get, deep_set, deep_pop
@@ -9,6 +8,22 @@ _doesNotExist = object()
     
 
 class DiffSet(TypedDict):
+    """
+    Structure representing a single change record in DiffDict.
+    
+    Each change made to a DiffDict is recorded as a DiffSet containing
+    information about what changed, when it changed, and the before/after values.
+    
+    Attributes:
+        key (str): The key that was modified
+        stamp (int | None): Timestamp of the change, or None if timestamps disabled
+        previous (str | None): Hash/value before the change, or None for new keys
+        new (str | None): Hash/value after the change, or None for deletions
+    
+    Note:
+        For primitive types (str, int, float), the actual values are stored.
+        For complex objects, SHA1 hashes of their string representations are stored.
+    """
     key: str
     stamp: int | None
     previous: str | None
@@ -17,13 +32,62 @@ class DiffSet(TypedDict):
 
 class DiffDict:
     """
-    a dict that tracks changes
+    A dictionary-like container that tracks all changes made to its data.
+    
+    DiffDict provides a full dictionary interface while maintaining a complete history
+    of all modifications, including additions, updates, and deletions. It supports
+    nested keys using configurable separators and can detect external modifications
+    to stored mutable objects through the updateAtKey method.
+    
+    Features:
+        - Full dict-like interface (__getitem__, __setitem__, __contains__, etc.)
+        - Change tracking with timestamps and hash comparison
+        - Support for nested keys with configurable separators
+        - Callback system for change notifications
+        - Change history pruning for memory management
+        - External modification detection for mutable objects
+        - Configurable hashing functions and timestamp options
+    
+    Args:
+        data (dict, optional): Initial data to populate the dictionary. Defaults to empty dict.
+        hashFunc (callable, optional): Hash function for change detection. Defaults to sha1.
+        stamp (bool, optional): Whether to include timestamps in change records. Defaults to True.
+        separator (str, optional): Separator for nested keys. Defaults to "/".
+    
+    Example:
+        >>> dd = DiffDict()
+        >>> dd["user/name"] = "Alice"
+        >>> dd["user/age"] = 25
+        >>> dd["user/name"] = "Bob"  # Update existing
+        >>> len(dd.changes["all"])   # 3 changes recorded
+        3
+        >>> dd.changes["last"]["key"]
+        'user/name'
+        
+        # External modification tracking
+        >>> my_list = [1, 2, 3]
+        >>> dd["data"] = my_list
+        >>> my_list.append(4)  # Modify externally
+        >>> dd.updateAtKey("data")  # Notify of change
     """
 
     def __init__(
         self, data: dict = None, hashFunc: callable = sha1, stamp: bool = True,
         separator : str = "/"
     ):
+        """
+        Initialize a new DiffDict instance.
+        
+        Args:
+            data (dict, optional): Initial data to populate the dictionary. 
+                If None, starts with an empty dictionary. Defaults to None.
+            hashFunc (callable, optional): Hash function used for change detection.
+                Must return an object with a hexdigest() method. Defaults to sha1.
+            stamp (bool, optional): Whether to include timestamps in change records.
+                If True, each change includes a timestamp. Defaults to True.
+            separator (str, optional): String used to separate nested key components.
+                For example, "/" allows keys like "user/profile/name". Defaults to "/".
+        """
         if data is None:
             data = {}
         self.__data = data
@@ -36,16 +100,82 @@ class DiffDict:
         self.__callbacks = []
 
     def prune_changes(self, keep: int = 256):
+        """
+        Remove old change records to manage memory usage.
+        
+        Keeps only the most recent 'keep' number of changes and discards older ones.
+        This is useful for long-running applications where the full change history
+        is not needed and memory usage is a concern.
+        
+        Args:
+            keep (int, optional): Number of recent changes to retain. 
+                If 0 or negative, removes all changes. Defaults to 256.
+        
+        Example:
+            >>> dd = DiffDict()
+            >>> for i in range(1000):
+            ...     dd[f"key{i}"] = f"value{i}"
+            >>> len(dd.changes["all"])  # 1000 changes
+            1000
+            >>> dd.prune_changes(100)
+            >>> len(dd.changes["all"])  # Only last 100 kept
+            100
+        """
         if keep <= 0:
             self.__changes = []
         else:
             self.__changes = self.__changes[-keep:]
 
     def add_callback(self, callback: callable):
+        """
+        Add a callback function that is called whenever a change is recorded.
+        
+        The callback function will be invoked after each change is recorded in the
+        change history. Multiple callbacks can be added and will be called in the
+        order they were added.
+        
+        Args:
+            callback (callable): Function to call on each change. The function should
+                accept one argument: the DiffDict instance. It will be called after
+                each change is recorded, allowing inspection of the current state
+                and change history.
+        
+        Example:
+            >>> def on_change(diff_dict):
+            ...     print(f"Change detected: {diff_dict.changes['last']['key']}")
+            >>> dd = DiffDict()
+            >>> dd.add_callback(on_change)
+            >>> dd["test"] = "value"  # Prints: "Change detected: test"
+        """
         self.__callbacks.append(callback)
 
     @property
     def changes(self):
+        """
+        Get a read-only view of the change history.
+        
+        Returns a MappingProxyType containing the complete change history and
+        quick access to the most recent change. The returned object is immutable
+        to prevent accidental modification of the change history.
+        
+        Returns:
+            MappingProxyType: Dictionary-like object with keys:
+                - "all": List of all change records (DiffSet objects)
+                - "last": Most recent change record, or None if no changes
+        
+        Note:
+            The returned object is a snapshot. If more changes are made after
+            getting this property, you need to access the property again to
+            see the new changes.
+        
+        Example:
+            >>> dd = DiffDict()
+            >>> dd["key"] = "value"
+            >>> changes = dd.changes
+            >>> len(changes["all"])  # 1
+            >>> changes["last"]["key"]  # "key"
+            >>> changes["last"]["new"]  # "value"
+        """
         return MappingProxyType({
             "all" : self.__changes,
             "last" : self.__changes[-1] if self.__changes else None
@@ -54,13 +184,45 @@ class DiffDict:
 
     @property
     def useHexCheck(self):
+        """
+        Get the current hex check setting.
+        
+        Returns:
+            bool: True if hex checking is enabled, False otherwise.
+        """
         return self.__useHexCheck
 
     @useHexCheck.setter
     def useHexCheck(self, value):
+        """
+        Set whether to use hex checking for change detection.
+        
+        When enabled, forces hash-based comparison even for primitive types
+        that would normally use direct value comparison.
+        
+        Args:
+            value (bool): True to enable hex checking, False to disable.
+        """
         self.__useHexCheck = value
 
     def __compare(self, key, val1, val2, hash1=_doesNotExist, hash2=_doesNotExist):
+        """
+        Internal method to compare two values and record changes.
+        
+        This method handles the core logic of change detection by comparing
+        hash values of old and new values. It updates internal state and
+        records changes when differences are detected.
+        
+        Args:
+            key (str): The key being modified
+            val1: Previous value (or _doesNotExist for new keys)
+            val2: New value (or _doesNotExist for deletions)
+            hash1: Pre-computed hash of val1 (optional)
+            hash2: Pre-computed hash of val2 (optional)
+        
+        Returns:
+            bool: True if a change was recorded, False if values are identical
+        """
         if key in self.__keysums:
             hash1 = self.__keysums[key]
 
@@ -122,6 +284,22 @@ class DiffDict:
         self.__compare(key, current_value, current_value, hash1=old_hash)
 
     def __setitem__(self, key, value):
+        """
+        Set a value for the given key, recording the change.
+        
+        Implements the dictionary interface for assignment operations (dd[key] = value).
+        Supports nested keys using the configured separator. Records a change
+        unless the new value is identical to the existing value.
+        
+        Args:
+            key (str): Key to set. Can be nested using the separator (e.g., "user/name").
+            value: Value to store. Can be any type.
+        
+        Example:
+            >>> dd = DiffDict()
+            >>> dd["simple"] = "value"
+            >>> dd["nested/key"] = {"data": [1, 2, 3]}
+        """
         # get the previous value
         previousVal = self.__data.get(key, _doesNotExist)
         if not self.__useHexCheck and previousVal == value:
@@ -133,7 +311,27 @@ class DiffDict:
 
     def pop(self, key, default=_doesNotExist):
         """
-        pop value essentially removes the record and calls 
+        Remove and return the value for the given key, recording the change.
+        
+        Similar to dict.pop(), removes the key from the dictionary and returns
+        its value. The removal is recorded as a change in the history.
+        
+        Args:
+            key (str): Key to remove. Can be nested using the separator.
+            default: Value to return if key is not found. If not provided
+                and key is missing, raises KeyError.
+        
+        Returns:
+            The value that was stored at the key.
+        
+        Raises:
+            KeyError: If key is not found and no default is provided.
+        
+        Example:
+            >>> dd = DiffDict()
+            >>> dd["temp"] = "temporary"
+            >>> value = dd.pop("temp")  # Returns "temporary"
+            >>> "temp" in dd  # False
         """
         previousVal = deep_get(self.__data, key, self.__separator, _doesNotExist)
         if previousVal is _doesNotExist:
@@ -145,17 +343,90 @@ class DiffDict:
         return previousVal
 
     def __getitem__(self, key):
+        """
+        Get the value for the given key.
+        
+        Implements the dictionary interface for access operations (dd[key]).
+        Supports nested keys using the configured separator.
+        
+        Args:
+            key (str): Key to retrieve. Can be nested using the separator.
+        
+        Returns:
+            The value stored at the key.
+        
+        Raises:
+            KeyError: If the key is not found.
+        
+        Example:
+            >>> dd = DiffDict()
+            >>> dd["user/profile/name"] = "Alice"
+            >>> name = dd["user/profile/name"]  # "Alice"
+        """
         res = deep_get(self.__data, key, self.__separator, _doesNotExist)
         if res is _doesNotExist:
             raise KeyError(f"Key '{key}' not found")
         return res
 
     def __contains__(self, key):
+        """
+        Check if a key exists in the dictionary.
+        
+        Implements the dictionary interface for membership testing (key in dd).
+        Supports nested keys and partial paths.
+        
+        Args:
+            key (str): Key to check. Can be nested using the separator.
+        
+        Returns:
+            bool: True if the key exists, False otherwise.
+        
+        Example:
+            >>> dd = DiffDict()
+            >>> dd["user/profile/name"] = "Alice"
+            >>> "user/profile/name" in dd  # True
+            >>> "user/profile" in dd       # True (partial path)
+            >>> "user/email" in dd         # False
+        """
         return deep_get(self.__data, key, self.__separator, _doesNotExist) is not _doesNotExist
     
     def __delitem__(self, key):
+        """
+        Delete a key from the dictionary, recording the change.
+        
+        Implements the dictionary interface for deletion operations (del dd[key]).
+        This is equivalent to calling pop(key) but doesn't return the value.
+        
+        Args:
+            key (str): Key to delete. Can be nested using the separator.
+        
+        Raises:
+            KeyError: If the key is not found.
+        
+        Example:
+            >>> dd = DiffDict()
+            >>> dd["temporary"] = "value"
+            >>> del dd["temporary"]  # Records deletion change
+        """
         self.pop(key)
 
     def __len__(self):
+        """
+        Get the number of top-level keys in the dictionary.
+        
+        Returns:
+            int: Number of keys at the top level of the dictionary structure.
+        
+        Note:
+            This returns the count of top-level keys only. Nested keys created
+            through the separator syntax are not counted separately.
+        
+        Example:
+            >>> dd = DiffDict()
+            >>> dd["key1"] = "value1"
+            >>> dd["nested/key2"] = "value2"  # Creates top-level "nested" key
+            >>> len(dd)  # 2 (key1 and nested)
+            2
+        """
         return len(self.__data)
     
