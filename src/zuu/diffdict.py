@@ -3,7 +3,6 @@ from types import MappingProxyType
 from typing import TypedDict
 from zuu.simple_dict import deep_get, deep_set, deep_pop
 from hashlib import sha1
-import os
 
 _doesNotExist = object()
 
@@ -549,3 +548,21 @@ class DiffDict:
             2
         """
         return len(self.__data)
+
+    def update_keysums(self, update : bool = False, overwrite : bool = False):
+        from zuu.dict_patterns import iter_nested_keys
+
+        map = {}
+        for key, value in iter_nested_keys(self.__data, self.__separator, iter_type="both", yieldComplexStructure=True):
+            if isinstance(value, (str, int, float)) and not self.__useHexCheck:
+                map[key] = str(value)
+            else:
+                map[key] = self.__hashFunc(str(value).encode()).hexdigest()
+        
+        if overwrite:
+            self.__keysums = map
+        elif update:
+            self.__keysums.update(map)
+        else:
+            return map
+
