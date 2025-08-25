@@ -52,3 +52,33 @@ def rreplace(s: str, old: str, new: str, occurrence):
 
     parts = s.rsplit(old, occurrence)
     return new.join(parts)
+
+
+def simple_matches(values : list[str], patterns : list[str], useCache : bool = True) -> bool:
+    """
+    Checks if any value in a list matches any pattern in another list using simple_match.
+    Caches results for efficiency if useCache is True.
+    
+    Args:
+        values (list[str]): List of strings to check.
+        patterns (list[str]): List of patterns to match against.
+        useCache (bool): Whether to cache results for efficiency.
+        
+    Returns:
+        bool: True if any value matches any pattern, False otherwise.
+    """
+    cache = {}
+    
+    for value in values:
+        for pattern in patterns:
+            key = (value, pattern)
+            if useCache and key in cache:
+                if cache[key]:
+                    return True
+            else:
+                match_result = simple_match(pattern, value)
+                if useCache:
+                    cache[key] = match_result
+                if match_result:
+                    return True
+    return False
