@@ -7,7 +7,7 @@ Provides a class-based approach to blocking requests from blacklisted IPs.
 from functools import wraps
 from dataclasses import dataclass
 from flask import request
-from .flask import get_client_ip
+from zuu.flask import get_client_ip
 
 @dataclass
 class SimpleBlacklist:
