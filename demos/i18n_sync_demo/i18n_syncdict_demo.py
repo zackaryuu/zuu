@@ -24,7 +24,7 @@ from datetime import datetime
 # Add src to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from zuu.syncdict import SyncDict
+from zuu.u.syncdict import SyncDict
 
 
 class I18nSyncDemo:
