@@ -3,7 +3,7 @@ import json
 import os
 import tempfile
 import shutil
-from src.zuu.syncdict import SyncDict
+from zuu.u.syncdict import SyncDict
 
 
 class TestSyncDict:

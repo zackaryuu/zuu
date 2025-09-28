@@ -1,5 +1,5 @@
 import pytest
-from zuu.match_string import (
+from zuu.u.match_string import (
     is_year,
     is_year_2000s,
     is_year_month,

@@ -1,5 +1,5 @@
 import pytest
-from zuu.simple_string import simple_match, simple_matches
+from zuu.std.string import simple_match, simple_matches
 
 def test_simple_match_exact():
     assert simple_match('abc', 'abc')

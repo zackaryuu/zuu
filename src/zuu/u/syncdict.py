@@ -1,8 +1,8 @@
 import os
-from zuu.dict_patterns import extract_nested_keys
-from zuu.json_io import read_json, write_json
-from zuu.diffdict import DiffDict
-from zuu.simple_dict import deep_get, deep_set, deep_pop
+from zuu.u.dict_patterns import extract_nested_keys
+from zuu.std.json import read_json, write_json
+from zuu.u.diffdict import DiffDict
+from zuu.std.dict import deep_get, deep_set, deep_pop
 import copy
 
 

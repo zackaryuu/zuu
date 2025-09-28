@@ -1,5 +1,5 @@
 import pytest
-from zuu.diffdict import DiffDict
+from zuu.u.diffdict import DiffDict
 
 
 class TestDiffDictAdvancedFeatures:

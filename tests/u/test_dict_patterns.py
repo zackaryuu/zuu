@@ -1,4 +1,4 @@
-from zuu.dict_patterns import extract_nested_keys
+from zuu.u.dict_patterns import extract_nested_keys
 
 def test_extract_nested_keys_dict():
     data = {'a': {'b': {'c': 1}, 'd': 2}, 'e': 3}

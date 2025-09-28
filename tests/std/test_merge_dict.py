@@ -1,5 +1,5 @@
 import pytest
-from zuu.simple_dict import merge_dict
+from zuu.std.dict import merge_dict
 
 def test_merge_dict_basic():
     d1 = {'a': 1, 'b': 2}

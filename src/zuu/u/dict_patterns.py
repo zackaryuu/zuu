@@ -1,7 +1,7 @@
 
 import typing
 
-from zuu.simple_string import simple_match
+from zuu.std.string import simple_match
 
 
 def extract_nested_keys(dct : dict | list, separator: str = '/', current : str = '', yieldComplexStructure : bool = False):

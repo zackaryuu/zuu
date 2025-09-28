@@ -1,5 +1,5 @@
 
-from zuu.json_io import read_json, write_json, overwrite_json
+from zuu.std.json import read_json, write_json, overwrite_json
 
 def test_overwrite_json_preserve(tmp_path):
     # Create original file
@@ -13,7 +13,7 @@ def test_overwrite_json_preserve(tmp_path):
     overwrite_json(str(file_path), new_data, preserve=preserve)
     result = read_json(str(file_path))
     # All keys matching any mask in preserve should be preserved from orig
-    from zuu.dict_patterns import iter_nested_keys
+    from zuu.u.dict_patterns import iter_nested_keys
     for k, v in iter_nested_keys(orig, iter_type="both", masks=preserve):
         # Get value from result using key path
         parts = k.split("/")

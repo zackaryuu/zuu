@@ -4,10 +4,10 @@ import os
 import re
 from typing import TypedDict
 import typing
-from .simple_dict import deep_set
+from zuu.std.dict import deep_set
 
 
-from zuu import dart
+from zuu.u import dart
 
 
 @lru_cache(maxsize=100)
@@ -88,7 +88,7 @@ def normalize_to_nested_map(
     Returns:
         Dictionary with dot notation keys like 'activitySuggestionScreen.activities.selectedLabel'
     """
-    from .nested_dict import compute_nested, flatten_dict
+    from zuu.std.dict import compute_nested, flatten_dict
     
     if not translation_usage:
         return {}

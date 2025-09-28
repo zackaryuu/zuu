@@ -1,5 +1,5 @@
 import pytest
-from zuu.simple_dict import deep_get, deep_set
+from zuu.std.dict import deep_get, deep_set
 
 def test_deep_get_dict():
     data = {'a': {'b': {'c': 42}}}
@@ -40,28 +40,28 @@ def test_deep_set_key_error():
         deep_set(data, 'a/b', 1)
 
 def test_deep_pop_dict():
-    from zuu.simple_dict import deep_pop
+    from zuu.std.dict import deep_pop
     data = {'a': {'b': {'c': 42}}}
     val = deep_pop(data, 'a/b/c')
     assert val == 42
     assert 'c' not in data['a']['b']
 
 def test_deep_pop_list():
-    from zuu.simple_dict import deep_pop
+    from zuu.std.dict import deep_pop
     data = {'a': [10, 20, 30]}
     val = deep_pop(data, 'a/1')
     assert val == 20
     assert data['a'] == [10, 30]
 
 def test_deep_pop_missing():
-    from zuu.simple_dict import deep_pop
+    from zuu.std.dict import deep_pop
     data = {'a': {'b': 1}}
     with pytest.raises(KeyError):
         deep_pop(data, 'a/x')
     assert deep_pop(data, 'a/x', default='missing') == 'missing'
 
 def test_deep_setdefault_dict():
-    from zuu.simple_dict import deep_setdefault
+    from zuu.std.dict import deep_setdefault
     data = {'a': {}}
     val = deep_setdefault(data, 'a/b', 123)
     assert val == 123
@@ -71,7 +71,7 @@ def test_deep_setdefault_dict():
     assert val2 == 123
 
 def test_deep_setdefault_list():
-    from zuu.simple_dict import deep_setdefault
+    from zuu.std.dict import deep_setdefault
     data = {'a': [None, 42]}
     val = deep_setdefault(data, 'a/0', 99)
     assert val == 99
@@ -82,7 +82,7 @@ def test_deep_setdefault_list():
 
 
 def test_deep_get_2_batch():
-    from zuu.simple_dict import deep_get_2
+    from zuu.std.dict import deep_get_2
     data = [
         {'x': {'x': 1}},
         {'x': {'x': 2}},
@@ -91,7 +91,7 @@ def test_deep_get_2_batch():
     assert deep_get_2(data, 'x/x') == [1, 2, 3]
 
 def test_deep_get_2_nested_batch():
-    from zuu.simple_dict import deep_get_2
+    from zuu.std.dict import deep_get_2
     data = {'a': [
         {'b': {'c': 10}},
         {'b': {'c': 20}},
@@ -100,7 +100,7 @@ def test_deep_get_2_nested_batch():
     assert deep_get_2(data, 'a/b/c') == [10, 20, 30]
 
 def test_deep_get_2_missing_key():
-    from zuu.simple_dict import deep_get_2
+    from zuu.std.dict import deep_get_2
     data = [
         {'x': {'x': 1}},
         {'y': {'x': 2}},
@@ -113,7 +113,7 @@ def test_deep_get_2_missing_key():
     assert deep_get_2(data, 'x/x', default=None) == [1, None, 3]
 
 def test_deep_get_2_non_dict_in_list():
-    from zuu.simple_dict import deep_get_2
+    from zuu.std.dict import deep_get_2
     data = [
         {'x': 1},
         42,
@@ -125,7 +125,7 @@ def test_deep_get_2_non_dict_in_list():
 
 
 def test_deep_get_2_multi_level_batch():
-    from zuu.simple_dict import deep_get_2
+    from zuu.std.dict import deep_get_2
     data = [
         {'a': [{'b': 1}, {'b': 2}]},
         {'a': [{'b': 3}, {'b': 4}]}
@@ -135,7 +135,7 @@ def test_deep_get_2_multi_level_batch():
     assert result == [[1, 2], [3, 4]]
 
 def test_deep_get_2_deeply_nested():
-    from zuu.simple_dict import deep_get_2
+    from zuu.std.dict import deep_get_2
     data = {
         'root': [
             {'branch': [
@@ -152,26 +152,26 @@ def test_deep_get_2_deeply_nested():
     assert deep_get_2(data, 'root/branch/leaf') == [[1, 2], [3, 4]]
 
 def test_deep_delete_dict():
-    from zuu.simple_dict import deep_delete
+    from zuu.std.dict import deep_delete
     data = {'a': {'b': {'c': 42}}}
     deep_delete(data, 'a/b/c')
     assert 'c' not in data['a']['b']
     assert data == {'a': {'b': {}}}
 
 def test_deep_delete_list():
-    from zuu.simple_dict import deep_delete
+    from zuu.std.dict import deep_delete
     data = {'a': [10, 20, 30]}
     deep_delete(data, 'a/1')
     assert data['a'] == [10, 30]
 
 def test_deep_delete_missing():
-    from zuu.simple_dict import deep_delete
+    from zuu.std.dict import deep_delete
     data = {'a': {'b': 1}}
     with pytest.raises(KeyError):
         deep_delete(data, 'a/x')
 
 def test_deep_delete_nested():
-    from zuu.simple_dict import deep_delete
+    from zuu.std.dict import deep_delete
     data = {'a': {'b': [1, {'c': 2}, 3]}}
     deep_delete(data, 'a/b/1/c')
     assert data == {'a': {'b': [1, {}, 3]}}

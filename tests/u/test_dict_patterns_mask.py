@@ -1,4 +1,4 @@
-from zuu.dict_patterns import iter_nested_keys
+from zuu.u.dict_patterns import iter_nested_keys
 
 def test_iter_nested_keys_key():
     data = {'a': {'b': 1}, 'c': [2, 3]}

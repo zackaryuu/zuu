@@ -1,5 +1,5 @@
 import pytest
-from src.zuu.nested_dict import compute_nested, flatten_dict
+from src.zuu.std.dict import compute_nested, flatten_dict
 
 
 class TestComputeNested:

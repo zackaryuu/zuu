@@ -3,7 +3,7 @@ import os
 import tempfile
 import shutil
 from unittest.mock import Mock, patch
-from zuu.geo_lookup import GeoLiteAuto
+from zuu.u.geo_lookup import GeoLiteAuto
 
 
 @pytest.fixture

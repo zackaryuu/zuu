@@ -1,7 +1,7 @@
 import datetime
 from types import MappingProxyType
 from typing import TypedDict
-from zuu.simple_dict import deep_get, deep_set, deep_pop
+from zuu.std.dict import deep_get, deep_set, deep_pop
 from hashlib import sha1
 
 _doesNotExist = object()
@@ -550,7 +550,7 @@ class DiffDict:
         return len(self.__data)
 
     def update_keysums(self, update : bool = False, overwrite : bool = False):
-        from zuu.dict_patterns import iter_nested_keys
+        from zuu.u.dict_patterns import iter_nested_keys
 
         map = {}
         for key, value in iter_nested_keys(self.__data, self.__separator, iter_type="both", yieldComplexStructure=True):

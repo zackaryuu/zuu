@@ -1,5 +1,5 @@
 import pytest
-from zuu.class_prop import classproperty, assignableClassProperty, AssignablePropertyMeta
+from zuu.u.class_prop import classproperty, assignableClassProperty, AssignablePropertyMeta
 
 
 class TestClassProperty:

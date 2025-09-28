@@ -1,6 +1,6 @@
 [project]
 name = "zuu"
-version = "25.8.20"
+version = "25.9.10001"
 description = "Zack's Useful Utilities - A collection of Python utilities for various tasks."
 authors = [
     { name = "ZackaryW", email = "gitzackw@gmail.com" }
@@ -32,3 +32,6 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/zuu"]
+
+[tool.ruff]
+ignore= ["F841"]

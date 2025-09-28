@@ -1,4 +1,4 @@
-from src.zuu import scoop
+from zuu.app import scoop
 
 def test_scoop_list_runs():
 	result = scoop.scoop_list()

@@ -1,5 +1,5 @@
 
-from zuu.nested_dict import flatten_dict, unflatten_dict
+from zuu.std.dict import flatten_dict, unflatten_dict
 
 def test_flatten_dict_deep_complex():
     d = {

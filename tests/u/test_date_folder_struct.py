@@ -1,6 +1,6 @@
 import pytest
 import datetime
-from zuu.date_folder_struct import (
+from zuu.u.date_folder_struct import (
     InMemoryDateFolder,
     get_datefolder_format_type,
     parse_date_range,

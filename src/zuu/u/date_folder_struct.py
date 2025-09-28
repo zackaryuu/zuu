@@ -27,7 +27,7 @@ import datetime
 import os
 from abc import ABC, abstractmethod
 from typing import List, Dict
-from .match_string import (
+from zuu.u.match_string import (
     is_year, is_year_month, is_year_month_day, is_time, 
     is_weekday_pattern, is_monthly_date_pattern
 )
@@ -523,7 +523,7 @@ class AbstractDateFolder(ABC):
             return []
             
         # Import here to avoid circular imports
-        from .match_string import is_weekday, is_monthtext_day
+        from zuu.u.match_string import is_weekday, is_monthtext_day
         
         created_folders = []
         
